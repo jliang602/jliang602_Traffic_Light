@@ -1,8 +1,21 @@
 /*
- * Traffic_Light.c
+ * Project Name: Traffic Light
+ *
+ * Filename: main.c
+ *
+ * Author: Joshua Liang
  *
  * Created: 1/31/2026 19:22:46
- * Author : jlian
+ *
+ * Description: This is the main code that controls the traffic light and pedestrian signal.
+ *
+ * Hardware Input:
+ *  PORTL.0 for push button
+ *
+ * Hardware Output:
+ *  PORTA.0 for red light
+ *  PORTA.1 for yellow light
+ *	PORTA.2 for green light
  */ 
 
 
