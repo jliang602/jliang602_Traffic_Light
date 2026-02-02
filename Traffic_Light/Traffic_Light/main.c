@@ -42,16 +42,24 @@ int main(void)
 	
 	
     // ----- Initialize Ports -----
+	DDRA = DDRA | (1<<PA2) | (1<<PA1) | (1<<PA0);		// Ports A.0, A.1, and A.2 as output to control traffic light
+	PORTA = PORTA & ~((1<<PA2) | (1<<PA1) | (1<<PA0));		// Ports A.0, A.1, and A.2 initial state
 	
-	DDRA = 0x07;		// Ports A.0, A.1, and A.2 as output to control traffic light
-	PORTA = ~(0x07);		// Ports A.0, A.1, and A.2 initial state
+	
+	
+	PORTA = green_light;
+	delay_in_ms(1000);
+	PORTA = yellow_light;
+	delay_in_ms(1000);
+	PORTA = red_light;
+	delay_in_ms(1000);
 	
 	
 	
     while (1)
     {
 		
-		PORTA = green_light;
+		
 		
     }
 }
