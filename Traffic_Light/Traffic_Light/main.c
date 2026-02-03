@@ -59,7 +59,7 @@ int main(void)
 		delay_in_ms(2000);
 		walk_signal();
 		delay_in_ms(5000);
-		for (uint8_t i = 1; i <= 10; i++)
+		for (uint8_t i = 1; i <= 9; i++)
 		{
 			dont_walk_signal();
 			delay_in_ms(500);

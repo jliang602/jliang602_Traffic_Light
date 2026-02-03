@@ -226,7 +226,7 @@ int main(void)
  138:	4c d0       	rcall	.+152    	; 0x1d2 <walk_signal>
  13a:	88 e8       	ldi	r24, 0x88	; 136
  13c:	93 e1       	ldi	r25, 0x13	; 19
-		for (uint8_t i = 1; i <= 10; i++)
+		for (uint8_t i = 1; i <= 9; i++)
  13e:	12 d0       	rcall	.+36     	; 0x164 <delay_in_ms>
  140:	c1 e0       	ldi	r28, 0x01	; 1
 		{
@@ -248,9 +248,9 @@ int main(void)
 		delay_in_ms(2000);
 		walk_signal();
 		delay_in_ms(5000);
-		for (uint8_t i = 1; i <= 10; i++)
+		for (uint8_t i = 1; i <= 9; i++)
  154:	cf 5f       	subi	r28, 0xFF	; 255
- 156:	cb 30       	cpi	r28, 0x0B	; 11
+ 156:	ca 30       	cpi	r28, 0x0A	; 10
  158:	a8 f3       	brcs	.-22     	; 0x144 <main+0x3a>
 			dont_walk_signal();
 			delay_in_ms(500);
