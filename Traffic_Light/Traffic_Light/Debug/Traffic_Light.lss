@@ -3,29 +3,29 @@ Traffic_Light.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800200  00800200  000001ee  2**0
+  0 .data         00000000  00800200  00800200  0000021c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000019a  00000000  00000000  00000054  2**1
+  1 .text         000001c8  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  000001ee  2**0
+  2 .comment      00000030  00000000  00000000  0000021c  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000220  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  0000024c  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000048  00000000  00000000  00000260  2**0
+  4 .debug_aranges 00000048  00000000  00000000  0000028c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000e03  00000000  00000000  000002a8  2**0
+  5 .debug_info   00000e19  00000000  00000000  000002d4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000c65  00000000  00000000  000010ab  2**0
+  6 .debug_abbrev 00000c70  00000000  00000000  000010ed  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000434  00000000  00000000  00001d10  2**0
+  7 .debug_line   0000043a  00000000  00000000  00001d5d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000058  00000000  00000000  00002144  2**2
+  8 .debug_frame  00000058  00000000  00000000  00002198  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00000581  00000000  00000000  0000219c  2**0
+  9 .debug_str    00000581  00000000  00000000  000021f0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000043  00000000  00000000  0000271d  2**0
+ 10 .debug_loc    00000043  00000000  00000000  00002771  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000028  00000000  00000000  00002760  2**0
+ 11 .debug_ranges 00000028  00000000  00000000  000027b4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -170,159 +170,210 @@ Disassembly of section .text:
  100:	b2 07       	cpc	r27, r18
  102:	e1 f7       	brne	.-8      	; 0xfc <.do_clear_bss_loop>
  104:	02 d0       	rcall	.+4      	; 0x10a <main>
- 106:	47 c0       	rjmp	.+142    	; 0x196 <_exit>
+ 106:	5e c0       	rjmp	.+188    	; 0x1c4 <_exit>
 
 00000108 <__bad_interrupt>:
  108:	7b cf       	rjmp	.-266    	; 0x0 <__vectors>
 
 0000010a <main>:
+int main(void)
 {
 	
 	
 	
+	timers_init();
+ 10a:	46 d0       	rcall	.+140    	; 0x198 <timers_init>
+	
     // ----- Initialize Ports -----
 	DDRA = DDRA | (1<<PA2) | (1<<PA1) | (1<<PA0);		// Ports A.0, A.1, and A.2 as output to control traffic light
- 10a:	81 b1       	in	r24, 0x01	; 1
- 10c:	87 60       	ori	r24, 0x07	; 7
- 10e:	81 b9       	out	0x01, r24	; 1
+ 10c:	81 b1       	in	r24, 0x01	; 1
+ 10e:	87 60       	ori	r24, 0x07	; 7
+ 110:	81 b9       	out	0x01, r24	; 1
 	PORTA = PORTA & ~((1<<PA2) | (1<<PA1) | (1<<PA0));		// Ports A.0, A.1, and A.2 initial state
- 110:	82 b1       	in	r24, 0x02	; 2
- 112:	88 7f       	andi	r24, 0xF8	; 248
- 114:	82 b9       	out	0x02, r24	; 2
+ 112:	82 b1       	in	r24, 0x02	; 2
+ 114:	88 7f       	andi	r24, 0xF8	; 248
+ 116:	82 b9       	out	0x02, r24	; 2
 	
 	
     while (1)
     {
 		
 		PORTA = green_light;
- 116:	84 e0       	ldi	r24, 0x04	; 4
- 118:	82 b9       	out	0x02, r24	; 2
+ 118:	84 e0       	ldi	r24, 0x04	; 4
+ 11a:	82 b9       	out	0x02, r24	; 2
 		// Don't walk signal
 		delay_in_ms(10000);
- 11a:	80 e1       	ldi	r24, 0x10	; 16
- 11c:	97 e2       	ldi	r25, 0x27	; 39
- 11e:	1c d0       	rcall	.+56     	; 0x158 <delay_in_ms>
+ 11c:	80 e1       	ldi	r24, 0x10	; 16
+ 11e:	97 e2       	ldi	r25, 0x27	; 39
+ 120:	1c d0       	rcall	.+56     	; 0x15a <delay_in_ms>
 		PORTA = yellow_light;
- 120:	82 e0       	ldi	r24, 0x02	; 2
- 122:	82 b9       	out	0x02, r24	; 2
+ 122:	82 e0       	ldi	r24, 0x02	; 2
+ 124:	82 b9       	out	0x02, r24	; 2
 		delay_in_ms(4000);
- 124:	80 ea       	ldi	r24, 0xA0	; 160
- 126:	9f e0       	ldi	r25, 0x0F	; 15
- 128:	17 d0       	rcall	.+46     	; 0x158 <delay_in_ms>
+ 126:	80 ea       	ldi	r24, 0xA0	; 160
+ 128:	9f e0       	ldi	r25, 0x0F	; 15
+ 12a:	17 d0       	rcall	.+46     	; 0x15a <delay_in_ms>
 		PORTA = red_light;
- 12a:	81 e0       	ldi	r24, 0x01	; 1
- 12c:	82 b9       	out	0x02, r24	; 2
+ 12c:	81 e0       	ldi	r24, 0x01	; 1
 		delay_in_ms(2000);
- 12e:	80 ed       	ldi	r24, 0xD0	; 208
- 130:	97 e0       	ldi	r25, 0x07	; 7
- 132:	12 d0       	rcall	.+36     	; 0x158 <delay_in_ms>
+ 12e:	82 b9       	out	0x02, r24	; 2
+ 130:	80 ed       	ldi	r24, 0xD0	; 208
+ 132:	97 e0       	ldi	r25, 0x07	; 7
 		// Walk signal
 		delay_in_ms(5000);
- 134:	88 e8       	ldi	r24, 0x88	; 136
- 136:	93 e1       	ldi	r25, 0x13	; 19
- 138:	0f d0       	rcall	.+30     	; 0x158 <delay_in_ms>
- 13a:	c1 e0       	ldi	r28, 0x01	; 1
+ 134:	12 d0       	rcall	.+36     	; 0x15a <delay_in_ms>
+ 136:	88 e8       	ldi	r24, 0x88	; 136
+ 138:	93 e1       	ldi	r25, 0x13	; 19
 		for (uint8_t i = 1; i <= 10; i++)
- 13c:	07 c0       	rjmp	.+14     	; 0x14c <main+0x42>
+ 13a:	0f d0       	rcall	.+30     	; 0x15a <delay_in_ms>
+ 13c:	c1 e0       	ldi	r28, 0x01	; 1
 		{
 			// Walk signal
 			delay_in_ms(500);
- 13e:	84 ef       	ldi	r24, 0xF4	; 244
- 140:	91 e0       	ldi	r25, 0x01	; 1
- 142:	0a d0       	rcall	.+20     	; 0x158 <delay_in_ms>
+ 13e:	07 c0       	rjmp	.+14     	; 0x14e <main+0x44>
+ 140:	84 ef       	ldi	r24, 0xF4	; 244
+ 142:	91 e0       	ldi	r25, 0x01	; 1
 			// Don't walk signal
 			delay_in_ms(500);
- 144:	84 ef       	ldi	r24, 0xF4	; 244
- 146:	91 e0       	ldi	r25, 0x01	; 1
- 148:	07 d0       	rcall	.+14     	; 0x158 <delay_in_ms>
+ 144:	0a d0       	rcall	.+20     	; 0x15a <delay_in_ms>
+ 146:	84 ef       	ldi	r24, 0xF4	; 244
+ 148:	91 e0       	ldi	r25, 0x01	; 1
 		delay_in_ms(4000);
 		PORTA = red_light;
 		delay_in_ms(2000);
 		// Walk signal
 		delay_in_ms(5000);
 		for (uint8_t i = 1; i <= 10; i++)
- 14a:	cf 5f       	subi	r28, 0xFF	; 255
- 14c:	cb 30       	cpi	r28, 0x0B	; 11
- 14e:	b8 f3       	brcs	.-18     	; 0x13e <main+0x34>
+ 14a:	07 d0       	rcall	.+14     	; 0x15a <delay_in_ms>
+ 14c:	cf 5f       	subi	r28, 0xFF	; 255
+ 14e:	cb 30       	cpi	r28, 0x0B	; 11
 			// Walk signal
 			delay_in_ms(500);
 			// Don't walk signal
 			delay_in_ms(500);
 		}
 		delay_in_ms(2000);
- 150:	80 ed       	ldi	r24, 0xD0	; 208
- 152:	97 e0       	ldi	r25, 0x07	; 7
- 154:	01 d0       	rcall	.+2      	; 0x158 <delay_in_ms>
- 156:	df cf       	rjmp	.-66     	; 0x116 <main+0xc>
+ 150:	b8 f3       	brcs	.-18     	; 0x140 <main+0x36>
+ 152:	80 ed       	ldi	r24, 0xD0	; 208
+ 154:	97 e0       	ldi	r25, 0x07	; 7
+ 156:	01 d0       	rcall	.+2      	; 0x15a <delay_in_ms>
+		
+    }
+ 158:	df cf       	rjmp	.-66     	; 0x118 <main+0xe>
 
-00000158 <delay_in_ms>:
+0000015a <delay_in_ms>:
 
 // ----- Variables -----
 uint8_t time_in_ms;
 
 void delay_in_ms(uint16_t time_in_ms)
 {
- 158:	fc 01       	movw	r30, r24
+ 15a:	fc 01       	movw	r30, r24
 
 	for (uint16_t a = 1; a <= time_in_ms; a++)
- 15a:	41 e0       	ldi	r20, 0x01	; 1
- 15c:	50 e0       	ldi	r21, 0x00	; 0
- 15e:	17 c0       	rjmp	.+46     	; 0x18e <delay_in_ms+0x36>
+ 15c:	41 e0       	ldi	r20, 0x01	; 1
+ 15e:	50 e0       	ldi	r21, 0x00	; 0
+ 160:	17 c0       	rjmp	.+46     	; 0x190 <delay_in_ms+0x36>
 	{
 		
 		TCNT0 = 6;		// Pre-load count to delay 1 ms with a clock pre-scale of 64
- 160:	96 e0       	ldi	r25, 0x06	; 6
- 162:	96 bd       	out	0x26, r25	; 38
+ 162:	96 e0       	ldi	r25, 0x06	; 6
+ 164:	96 bd       	out	0x26, r25	; 38
 		TCCR0B = TCCR0B | (1<<CS31) | (1<<CS30);		// Pre-scale clock by 64 and start counting
- 164:	95 b5       	in	r25, 0x25	; 37
- 166:	93 60       	ori	r25, 0x03	; 3
- 168:	95 bd       	out	0x25, r25	; 37
+ 166:	95 b5       	in	r25, 0x25	; 37
+ 168:	93 60       	ori	r25, 0x03	; 3
+ 16a:	95 bd       	out	0x25, r25	; 37
 		
 		while (!(TIFR0 & (1<<TOV0)))		// Timer hasn't reached maximum
- 16a:	a8 9b       	sbis	0x15, 0	; 21
- 16c:	fe cf       	rjmp	.-4      	; 0x16a <delay_in_ms+0x12>
+ 16c:	a8 9b       	sbis	0x15, 0	; 21
+ 16e:	fe cf       	rjmp	.-4      	; 0x16c <delay_in_ms+0x12>
 		{
 			
 		}
 		
 		TCCR0B = TCCR0B & ~( (1<<CS31) | (1<<CS30) );		// Stop counting
- 16e:	95 b5       	in	r25, 0x25	; 37
- 170:	9c 7f       	andi	r25, 0xFC	; 252
- 172:	95 bd       	out	0x25, r25	; 37
+ 170:	95 b5       	in	r25, 0x25	; 37
+ 172:	9c 7f       	andi	r25, 0xFC	; 252
+ 174:	95 bd       	out	0x25, r25	; 37
 		
 		TIFR0 = TIFR0 | (1<<TIFR0);		// Remove flag
- 174:	95 b3       	in	r25, 0x15	; 21
- 176:	65 b3       	in	r22, 0x15	; 21
- 178:	21 e0       	ldi	r18, 0x01	; 1
- 17a:	30 e0       	ldi	r19, 0x00	; 0
- 17c:	02 c0       	rjmp	.+4      	; 0x182 <delay_in_ms+0x2a>
- 17e:	22 0f       	add	r18, r18
- 180:	33 1f       	adc	r19, r19
- 182:	6a 95       	dec	r22
- 184:	e2 f7       	brpl	.-8      	; 0x17e <delay_in_ms+0x26>
- 186:	29 2b       	or	r18, r25
- 188:	25 bb       	out	0x15, r18	; 21
+ 176:	95 b3       	in	r25, 0x15	; 21
+ 178:	65 b3       	in	r22, 0x15	; 21
+ 17a:	21 e0       	ldi	r18, 0x01	; 1
+ 17c:	30 e0       	ldi	r19, 0x00	; 0
+ 17e:	02 c0       	rjmp	.+4      	; 0x184 <delay_in_ms+0x2a>
+ 180:	22 0f       	add	r18, r18
+ 182:	33 1f       	adc	r19, r19
+ 184:	6a 95       	dec	r22
+ 186:	e2 f7       	brpl	.-8      	; 0x180 <delay_in_ms+0x26>
+ 188:	29 2b       	or	r18, r25
+ 18a:	25 bb       	out	0x15, r18	; 21
 uint8_t time_in_ms;
 
 void delay_in_ms(uint16_t time_in_ms)
 {
 
 	for (uint16_t a = 1; a <= time_in_ms; a++)
- 18a:	4f 5f       	subi	r20, 0xFF	; 255
- 18c:	5f 4f       	sbci	r21, 0xFF	; 255
- 18e:	e4 17       	cp	r30, r20
- 190:	f5 07       	cpc	r31, r21
- 192:	30 f7       	brcc	.-52     	; 0x160 <delay_in_ms+0x8>
+ 18c:	4f 5f       	subi	r20, 0xFF	; 255
+ 18e:	5f 4f       	sbci	r21, 0xFF	; 255
+ 190:	e4 17       	cp	r30, r20
+ 192:	f5 07       	cpc	r31, r21
+ 194:	30 f7       	brcc	.-52     	; 0x162 <delay_in_ms+0x8>
 		
 		TIFR0 = TIFR0 | (1<<TIFR0);		// Remove flag
 		
 	}
 
 }
- 194:	08 95       	ret
+ 196:	08 95       	ret
 
-00000196 <_exit>:
- 196:	f8 94       	cli
+00000198 <timers_init>:
+{
+	
+	
+	
+	// ----- Timer 0 (Normal Mode) -----
+	TCCR0A = TCCR0A | 0x00;		// Set waveform generation mode
+ 198:	84 b5       	in	r24, 0x24	; 36
+ 19a:	84 bd       	out	0x24, r24	; 36
+	
+	TCCR0B = TCCR0B | 0x00;		// Timer shouldn't be active
+ 19c:	85 b5       	in	r24, 0x25	; 37
+ 19e:	85 bd       	out	0x25, r24	; 37
+	// ----------
+	
+	
+	
+	// ----- Timer 1 (PWM, Phase Correct, 8-bit) -----
+	DDRE = DDRE | (1<<PB7) | (1<<PB6) | (1<<PB5);		// Configure Port E.5, E.6, and E.7 for OC1A, OC1B, and OC1C outputs
+ 1a0:	8d b1       	in	r24, 0x0d	; 13
+ 1a2:	80 6e       	ori	r24, 0xE0	; 224
+ 1a4:	8d b9       	out	0x0d, r24	; 13
+	PORTE = DDRE & ~((1<<PB7) | (1<<PB6) | (1<<PB5));		// Ports E.5, E.6, and E.7 initial state
+ 1a6:	8d b1       	in	r24, 0x0d	; 13
+ 1a8:	8f 71       	andi	r24, 0x1F	; 31
+ 1aa:	8e b9       	out	0x0e, r24	; 14
+	
+	TCCR1A = TCCR1A | (1<<WGM10);		// Set waveform generation mode
+ 1ac:	e0 e8       	ldi	r30, 0x80	; 128
+ 1ae:	f0 e0       	ldi	r31, 0x00	; 0
+ 1b0:	80 81       	ld	r24, Z
+ 1b2:	81 60       	ori	r24, 0x01	; 1
+ 1b4:	80 83       	st	Z, r24
+	
+	TCCR1A = TCCR1A | (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0) | (1<<COM1C1) | (1<<COM1C0);		// Set OC1A, OC1B, and OC1C on OCR values during up counting, clear all three on OCR values during down counting 
+ 1b6:	80 81       	ld	r24, Z
+ 1b8:	8c 6f       	ori	r24, 0xFC	; 252
+ 1ba:	80 83       	st	Z, r24
+	
+	TCCR1A = TCCR1A | (1<<CS11) | (1<<CS10);		// Pre-scale clock by 64 and start counting
+ 1bc:	80 81       	ld	r24, Z
+ 1be:	83 60       	ori	r24, 0x03	; 3
+ 1c0:	80 83       	st	Z, r24
+ 1c2:	08 95       	ret
 
-00000198 <__stop_program>:
- 198:	ff cf       	rjmp	.-2      	; 0x198 <__stop_program>
+000001c4 <_exit>:
+ 1c4:	f8 94       	cli
+
+000001c6 <__stop_program>:
+ 1c6:	ff cf       	rjmp	.-2      	; 0x1c6 <__stop_program>

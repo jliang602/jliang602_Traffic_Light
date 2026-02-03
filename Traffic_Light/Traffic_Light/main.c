@@ -40,6 +40,8 @@ int main(void)
 	
 	
 	
+	timers_init();
+	
     // ----- Initialize Ports -----
 	DDRA = DDRA | (1<<PA2) | (1<<PA1) | (1<<PA0);		// Ports A.0, A.1, and A.2 as output to control traffic light
 	PORTA = PORTA & ~((1<<PA2) | (1<<PA1) | (1<<PA0));		// Ports A.0, A.1, and A.2 initial state
