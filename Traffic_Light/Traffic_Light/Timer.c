@@ -13,7 +13,9 @@
  *  None
  *
  * Hardware Output:
- *  PORTE.3 for OCR3A PWM signal output
+ *  PORTE.5 for red light on multicolor LED
+ *  PORTE.6 for green light on multicolor LED
+ *	PORTE.7 for blue light on multicolor LED
  */ 
 
 #define F_CPU 16000000UL
@@ -58,10 +60,15 @@ void timers_init(void)
 	
 	
 	
-	// ----- Timer 3 (Normal Mode) -----
-	TCCR3A = TCCR3A | 0x00;		// Set waveform generation mode
+	// ----- Timer 1 (PWM, Phase Correct, 8-bit) -----
+	DDRE = DDRE | (1<<PB7) | (1<<PB6) | (1<<PB5);		// Configure Port E.5, E.6, and E.7 for OC1A, OC1B, and OC1C outputs
+	PORTE = DDRE & ~((1<<PB7) | (1<<PB6) | (1<<PB5));		// Ports E.5, E.6, and E.7 initial state
 	
-	TCCR3B = TCCR3B | 0x00;		// Timer shouldn't be active
+	TCCR1A = TCCR1A | (1<<WGM10);		// Set waveform generation mode
+	
+	TCCR1A = TCCR1A | (1<<COM1A1) | (1<<COM1A0) | (1<<COM1B1) | (1<<COM1B0) | (1<<COM1C1) | (1<<COM1C0);		// Set OC1A, OC1B, and OC1C on OCR values during up counting, clear all three on OCR values during down counting 
+	
+	TCCR1A = TCCR1A | (1<<CS11) | (1<<CS10);		// Pre-scale clock by 64 and start counting
 	// ----------
 	
 	
