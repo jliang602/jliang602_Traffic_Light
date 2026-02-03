@@ -66,6 +66,7 @@ int main(void)
 			off();
 			delay_in_ms(500);
 		}
+		dont_walk_signal();
 		delay_in_ms(2000);
 		
     }
