@@ -61,9 +61,9 @@ int main(void)
 		delay_in_ms(5000);
 		for (uint8_t i = 1; i <= 10; i++)
 		{
-			walk_signal();
-			delay_in_ms(500);
 			dont_walk_signal();
+			delay_in_ms(500);
+			off();
 			delay_in_ms(500);
 		}
 		delay_in_ms(2000);
