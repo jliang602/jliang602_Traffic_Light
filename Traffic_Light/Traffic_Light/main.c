@@ -51,22 +51,21 @@ int main(void)
     {
 		
 		PORTA = green_light;
-		PORTG = dont_walk_signal;
+		// Don't walk signal
 		delay_in_ms(10000);
 		PORTA = yellow_light;
 		delay_in_ms(4000);
 		PORTA = red_light;
 		delay_in_ms(2000);
-		PORTG = walk_signal;
+		// Walk signal
 		delay_in_ms(5000);
 		for (uint8_t i = 1; i <= 10; i++)
 		{
-			PORTG = dont_walk_signal;
+			// Walk signal
 			delay_in_ms(500);
-			PORTG = 0xFF;
+			// Don't walk signal
 			delay_in_ms(500);
 		}
-		PORTG = dont_walk_signal;
 		delay_in_ms(2000);
 		
     }
