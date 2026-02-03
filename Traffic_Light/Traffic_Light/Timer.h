@@ -20,5 +20,7 @@
 // ----- Declaration of Functions -----
 void delay_in_ms(uint16_t time_in_ms);
 void timers_init(void);
+void walk_signal(void);
+void dont_walk_signal(void);
 
 #endif /* TIMER_H_ */

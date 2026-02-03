@@ -74,3 +74,19 @@ void timers_init(void)
 	
 	
 }
+
+void walk_signal(void)
+{
+	OCR1A = 127;
+	OCR1B = 127;
+	OCR1C = 127;
+}
+
+void dont_walk_signal(void)
+{
+	
+	OCR1A = 55;
+	OCR1B = 127;
+	OCR1C = 0;
+	
+}

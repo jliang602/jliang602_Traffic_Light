@@ -30,8 +30,6 @@
 #define red_light			0x01
 #define yellow_light		0x02
 #define green_light			0x04
-#define full_on				127		
-#define full_off			0
 
 
 
@@ -53,19 +51,19 @@ int main(void)
     {
 		
 		PORTA = green_light;
-		// Don't walk signal
+		dont_walk_signal();
 		delay_in_ms(10000);
 		PORTA = yellow_light;
 		delay_in_ms(4000);
 		PORTA = red_light;
 		delay_in_ms(2000);
-		// Walk signal
+		walk_signal();
 		delay_in_ms(5000);
 		for (uint8_t i = 1; i <= 10; i++)
 		{
-			// Walk signal
+			walk_signal();
 			delay_in_ms(500);
-			// Don't walk signal
+			dont_walk_signal();
 			delay_in_ms(500);
 		}
 		delay_in_ms(2000);
