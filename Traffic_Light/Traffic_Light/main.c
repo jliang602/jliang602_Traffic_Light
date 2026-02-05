@@ -20,8 +20,14 @@
 
 
 
+#define F_CPU 16000000UL
+
+
+
 // ----- Includes -----
 #include <avr/io.h>
+#include <avr/interrupt.h>
+#include "External_Interrupts.h"
 #include "Timer.h"
 
 
@@ -38,6 +44,7 @@ int main(void)
 	
 	
 	
+	interrupt_init();
 	timers_init();
 	
     // ----- Initialize Ports -----
@@ -49,9 +56,12 @@ int main(void)
 	
     while (1)
     {
+			
+		EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
 		
-		PORTA = green_light;
-		dont_walk_signal();
+		PORTA = green_light;		// Green light
+		dont_walk_signal();		// Don't walk signal
+		
 		delay_in_ms(10000);
 		PORTA = yellow_light;
 		delay_in_ms(4000);

@@ -19,59 +19,15 @@
 #include <avr/interrupt.h>
 #include "External_Interrupts.h"
 
-void interrupt_counter(void)
-{
-	
-	if (CW_direction == 1)		// CW direction detected
-	{
 
-		if (LED_sequence == 8)		// Maximum value should be 8
-		{
-			LED_sequence = 8;		// Hold at maximum for immediate incrementing
-		}
-		else
-		{
-			LED_sequence++;
-		}
-
-		PORTK = PORTK | (1 << (LED_sequence - 1));
-		
-		CW_direction = 0;		// Reset CW direction status
-		
-	}
-	
-	if (CCW_direction == 1)		// CCW direction detected
-	{
-
-		if (LED_sequence == 0)		// Minimum value should be 0
-		{
-			LED_sequence = 0;		// Hold at minimum for immediate incrementing
-		}
-		else
-		{
-			LED_sequence--;
-		}
-		
-		PORTK = PORTK & ~(1 << LED_sequence);
-
-		CCW_direction = 0;		// Reset CCW direction status
-		
-	}
-	
-}
 
 void interrupt_init(void)
 {
 	
-	DDRA = DDRA | 0x00;		// Set PORTA.0 for general purpose input
-	PORTA = PORTA | 0x01;		// Enable PORTA.0 pull-up resistor
+	DDRE = DDRE | (1<<PE4);		// Port E.4 for interrupt input (interrupt 4)
+	PORTE = PORTE & (1<<PE4);		// Port E.4 enable pull-up resistor
 	
-	DDRD = DDRD | 0x00;		// Set PORTD.2 for interrupt input 2
-	PORTD = PORTD | 0x04;		// Enable PORTD.2 pull-up resistor
-	
-	EICRA = EICRA | (1<<ISC21);		// External interrupt 2 for falling edge on DT
-	
-	EIMSK = EIMSK | (1<<INT2);		// Enable interrupt 2
+	EICRB = EICRB | (1<<ISC41) | (1<<ISC40);		// External interrupt 4 for falling edge on DT
 
 }
 
