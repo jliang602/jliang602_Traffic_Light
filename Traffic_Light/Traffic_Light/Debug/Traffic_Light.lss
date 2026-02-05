@@ -266,7 +266,7 @@ void ports_init(void)
 	dont_walk_signal();		// Don't walk signal
  15e:	7c d0       	rcall	.+248    	; 0x258 <dont_walk_signal>
  160:	10 92 00 02 	sts	0x0200, r1	; 0x800200 <__DATA_REGION_ORIGIN__>
-	ped_status = 0;
+	ped_status = 0;		// Initial pedestrian signal status
  164:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
     while (1)
     {

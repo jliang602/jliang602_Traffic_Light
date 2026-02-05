@@ -65,7 +65,7 @@ int main(void)
 	EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
 	PORTA = green_light;		// Green light
 	dont_walk_signal();		// Don't walk signal
-	ped_status = 0;
+	ped_status = 0;		// Initial pedestrian signal status
 	
 	
 	
