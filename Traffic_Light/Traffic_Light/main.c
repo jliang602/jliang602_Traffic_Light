@@ -58,11 +58,12 @@ int main(void)
 	interrupt_init();		// Initialize interrupts
 	timers_init();		// Initialize timers
 	ports_init();		// Initialize ports
+	sei();		// Enable interrupts
 	
 	
 	
 	// ----- Starting states -----
-	EIMSK = EIMSK | (1<<INT0);		// Enable interrupt 0
+	EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
 	PORTA = green_light;		// Green light
 	dont_walk_signal();		// Don't walk signal
 	ped_status = 0;		// Initial pedestrian signal status
@@ -87,9 +88,9 @@ int main(void)
 			
 			walk_signal();		// Walk signal
 			ped_status = 0;		// Reset crosswalk button status
-			EIMSK = EIMSK & ~(1<<INT0);		// Disable interrupt 0
+			EIMSK = EIMSK & ~(1<<INT4);		// Disable interrupt 4
 			delay_in_ms(5000);		// Wait 5 seconds
-			EIMSK = EIMSK | (1<<INT0);		// Enable interrupt 0
+			EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
 			
 			for (uint8_t i = 1; i <= 9; i++)		// Flash don't walk signal
 			{
@@ -127,7 +128,7 @@ void ports_init(void)
 
 
 
-ISR(INT0_vect)
+ISR(INT4_vect)
 {
 	
 	ped_status = 1;

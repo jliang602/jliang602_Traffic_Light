@@ -10,7 +10,7 @@
  * Description:
  *
  * Hardware Input:
- *  PORTD.0 - Interrupt 0 input from crosswalk button
+ *  PORTE.4 - Interrupt 4 input from crosswalk button
  */
 
 #define F_CPU 16000000UL
@@ -23,9 +23,9 @@
 void interrupt_init(void)
 {
 	
-	DDRD = DDRD & ~(1<<PD0);		// Port E.4 for interrupt input from crosswalk button (interrupt 4)
-	PORTD = PORTD | (1<<PD0);		// Port E.4 enable pull-up resistor
+	DDRE = DDRE & ~(1<<PE4);		// Port E.4 for interrupt input from crosswalk button (interrupt 4)
+	PORTE = PORTE | (1<<PE4);		// Port E.4 enable pull-up resistor
 	
-	EICRA = EICRA | (1<<ISC01);		// External interrupt 0 for falling edge on DT
+	EICRB = EICRB | (1<<ISC41);		// External interrupt 4 for falling edge on DT
 
 }
