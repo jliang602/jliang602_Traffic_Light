@@ -1,13 +1,13 @@
 /*
- * Project Name: PWM and ADC
+ * Project Name: Traffic Light
  *
  * Filename: Timer.h
  *
  * Author: Joshua Liang
  *
- * Created: 9/20/2024 2:01:24 PM
+ * Created:
  *
- * Description: In this header file for the timer module, the only sections needed are the header and function declarations that the module needs.
+ * Description:
  */
 
 

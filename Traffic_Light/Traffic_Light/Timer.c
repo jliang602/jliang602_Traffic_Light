@@ -1,13 +1,13 @@
 /*
- * Project Name: PWM and ADC
+ * Project Name: Traffic Light
  *
  * Filename: Timer.c
  *
  * Author: Joshua Liang
  *
- * Created: 9/20/2024 2:01:24 PM
+ * Created: 
  *
- * Description: The code to initialize the timers and ports for OCRnA/OCRnB/OCRnC are done in this module. This is also where a fixed 1 ms delay is implemented and then repeated multiple times to generate the desired delay. The total delay duration generated would be 1 ms times the desired delay in ms (total delay = 1 ms * desired delay in ms) by using a for loop to repeat the 1 ms delay as many times as needed.
+ * Description:
  *
  * Hardware Input:
  *  None

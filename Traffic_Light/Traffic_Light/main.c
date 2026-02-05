@@ -39,46 +39,88 @@
 
 
 
+// ----- Declare functions -----
+void ports_init(void);
+
+
+
+// ----- Global variables -----
+volatile uint8_t ped_status;
+
+
+
 int main(void)
 {
 	
 	
 	
-	interrupt_init();
-	timers_init();
+	// ----- Initializations -----
+	interrupt_init();		// Initialize interrupts
+	timers_init();		// Initialize timers
+	ports_init();		// Initialize ports
 	
-    // ----- Initialize Ports -----
-	DDRA = DDRA | (1<<PA2) | (1<<PA1) | (1<<PA0);		// Ports A.0, A.1, and A.2 as output to control traffic light
-	PORTA = PORTA & ~((1<<PA2) | (1<<PA1) | (1<<PA0));		// Ports A.0, A.1, and A.2 initial state
-
+	
+	
+	// ----- Starting states -----
+	EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
+	PORTA = green_light;		// Green light
+	dont_walk_signal();		// Don't walk signal
+	ped_status = 0;
 	
 	
 	
     while (1)
     {
 			
-		EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
 		
-		PORTA = green_light;		// Green light
-		dont_walk_signal();		// Don't walk signal
 		
-		delay_in_ms(10000);
-		PORTA = yellow_light;
-		delay_in_ms(4000);
-		PORTA = red_light;
-		delay_in_ms(2000);
-		walk_signal();
-		delay_in_ms(5000);
-		for (uint8_t i = 1; i <= 9; i++)
+		if (ped_status)		// Crosswalk button has been pressed
 		{
-			dont_walk_signal();
-			delay_in_ms(500);
-			off();
-			delay_in_ms(500);
+			
+			delay_in_ms(1000);		// Wait 1 second
+			
+			PORTA = yellow_light;		// Yellow light
+			delay_in_ms(4000);		// Wait 4 seconds
+			
+			PORTA = red_light;		// Red light
+			delay_in_ms(2000);		// Wait 2 seconds
+			
+			walk_signal();		// Walk signal
+			ped_status = 0;		// Reset crosswalk button status
+			EIMSK = EIMSK & ~(1<<INT4);		// Disable interrupt 4
+			delay_in_ms(5000);		// Wait 5 seconds
+			EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
+			
+			for (uint8_t i = 1; i <= 9; i++)		// Flash don't walk signal
+			{
+				
+				dont_walk_signal();
+				delay_in_ms(500);
+				off();
+				delay_in_ms(500);
+				
+			}
+			
+			dont_walk_signal();		// Steady don't walk signal
+			delay_in_ms(2000);		// Wait 2 seconds
+			
+			PORTA = green_light;		// Green light
+			
+			delay_in_ms(10000);		// Cooldown for 10 seconds
+			
 		}
-		dont_walk_signal();
-		delay_in_ms(2000);
+		
+		
 		
     }
 }
 
+
+
+void ports_init(void)
+{
+	
+	 DDRA = DDRA | (1<<PA2) | (1<<PA1) | (1<<PA0);		// Ports A.0, A.1, and A.2 as output to control traffic light
+	 PORTA = PORTA & ~((1<<PA2) | (1<<PA1) | (1<<PA0));		// Ports A.0, A.1, and A.2 initial state
+	 
+}
