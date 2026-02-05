@@ -183,13 +183,13 @@ Disassembly of section .text:
 void interrupt_init(void)
 {
 	
-	DDRE = DDRE | (1<<PE4);		// Port E.4 for interrupt input from crosswalk button (interrupt 4)
+	DDRE = DDRE & ~(1<<PE4);		// Port E.4 for interrupt input from crosswalk button (interrupt 4)
  10a:	8d b1       	in	r24, 0x0d	; 13
- 10c:	80 61       	ori	r24, 0x10	; 16
+ 10c:	8f 7e       	andi	r24, 0xEF	; 239
  10e:	8d b9       	out	0x0d, r24	; 13
-	PORTE = PORTE & (1<<PE4);		// Port E.4 enable pull-up resistor
+	PORTE = PORTE | (1<<PE4);		// Port E.4 enable pull-up resistor
  110:	8e b1       	in	r24, 0x0e	; 14
- 112:	80 71       	andi	r24, 0x10	; 16
+ 112:	80 61       	ori	r24, 0x10	; 16
  114:	8e b9       	out	0x0e, r24	; 14
 	
 	EICRB = EICRB | (1<<ISC41) | (1<<ISC40);		// External interrupt 4 for falling edge on DT

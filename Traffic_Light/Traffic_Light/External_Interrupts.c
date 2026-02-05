@@ -23,8 +23,8 @@
 void interrupt_init(void)
 {
 	
-	DDRE = DDRE | (1<<PE4);		// Port E.4 for interrupt input from crosswalk button (interrupt 4)
-	PORTE = PORTE & (1<<PE4);		// Port E.4 enable pull-up resistor
+	DDRE = DDRE & ~(1<<PE4);		// Port E.4 for interrupt input from crosswalk button (interrupt 4)
+	PORTE = PORTE | (1<<PE4);		// Port E.4 enable pull-up resistor
 	
 	EICRB = EICRB | (1<<ISC41) | (1<<ISC40);		// External interrupt 4 for falling edge on DT
 
