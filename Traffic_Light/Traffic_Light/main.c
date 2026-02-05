@@ -62,7 +62,7 @@ int main(void)
 	
 	
 	// ----- Starting states -----
-	EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
+	EIMSK = EIMSK | (1<<INT0);		// Enable interrupt 0
 	PORTA = green_light;		// Green light
 	dont_walk_signal();		// Don't walk signal
 	ped_status = 0;		// Initial pedestrian signal status
@@ -87,9 +87,9 @@ int main(void)
 			
 			walk_signal();		// Walk signal
 			ped_status = 0;		// Reset crosswalk button status
-			EIMSK = EIMSK & ~(1<<INT4);		// Disable interrupt 4
+			EIMSK = EIMSK & ~(1<<INT0);		// Disable interrupt 0
 			delay_in_ms(5000);		// Wait 5 seconds
-			EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
+			EIMSK = EIMSK | (1<<INT0);		// Enable interrupt 0
 			
 			for (uint8_t i = 1; i <= 9; i++)		// Flash don't walk signal
 			{
@@ -123,4 +123,13 @@ void ports_init(void)
 	 DDRA = DDRA | (1<<PA2) | (1<<PA1) | (1<<PA0);		// Ports A.0, A.1, and A.2 as output to control traffic light
 	 PORTA = PORTA & ~((1<<PA2) | (1<<PA1) | (1<<PA0));		// Ports A.0, A.1, and A.2 initial state
 	 
+}
+
+
+
+ISR(INT0_vect)
+{
+	
+	ped_status = 1;
+	
 }

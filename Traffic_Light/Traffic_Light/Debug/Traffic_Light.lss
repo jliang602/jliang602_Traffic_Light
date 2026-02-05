@@ -19,7 +19,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   7 .debug_abbrev 00000d4b  00000000  00000000  000013d1  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000061a  00000000  00000000  0000211c  2**0
+  8 .debug_line   0000061b  00000000  00000000  0000211c  2**0
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  000000dc  00000000  00000000  00002738  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -35,7 +35,7 @@ Disassembly of section .text:
 00000000 <__vectors>:
    0:	71 c0       	rjmp	.+226    	; 0xe4 <__ctors_end>
    2:	00 00       	nop
-   4:	81 c0       	rjmp	.+258    	; 0x108 <__bad_interrupt>
+   4:	d4 c0       	rjmp	.+424    	; 0x1ae <__vector_1>
    6:	00 00       	nop
    8:	7f c0       	rjmp	.+254    	; 0x108 <__bad_interrupt>
    a:	00 00       	nop
@@ -43,7 +43,7 @@ Disassembly of section .text:
    e:	00 00       	nop
   10:	7b c0       	rjmp	.+246    	; 0x108 <__bad_interrupt>
   12:	00 00       	nop
-  14:	86 c0       	rjmp	.+268    	; 0x122 <__vector_5>
+  14:	79 c0       	rjmp	.+242    	; 0x108 <__bad_interrupt>
   16:	00 00       	nop
   18:	77 c0       	rjmp	.+238    	; 0x108 <__bad_interrupt>
   1a:	00 00       	nop
@@ -171,7 +171,7 @@ Disassembly of section .text:
   fe:	a1 30       	cpi	r26, 0x01	; 1
  100:	b2 07       	cpc	r27, r18
  102:	e1 f7       	brne	.-8      	; 0xfc <.do_clear_bss_loop>
- 104:	24 d0       	rcall	.+72     	; 0x14e <main>
+ 104:	15 d0       	rcall	.+42     	; 0x130 <main>
  106:	c6 c0       	rjmp	.+396    	; 0x294 <_exit>
 
 00000108 <__bad_interrupt>:
@@ -183,186 +183,188 @@ Disassembly of section .text:
 void interrupt_init(void)
 {
 	
-	DDRE = DDRE & ~(1<<PE4);		// Port E.4 for interrupt input from crosswalk button (interrupt 4)
- 10a:	8d b1       	in	r24, 0x0d	; 13
- 10c:	8f 7e       	andi	r24, 0xEF	; 239
- 10e:	8d b9       	out	0x0d, r24	; 13
-	PORTE = PORTE | (1<<PE4);		// Port E.4 enable pull-up resistor
- 110:	8e b1       	in	r24, 0x0e	; 14
- 112:	80 61       	ori	r24, 0x10	; 16
- 114:	8e b9       	out	0x0e, r24	; 14
+	DDRD = DDRD & ~(1<<PD0);		// Port E.4 for interrupt input from crosswalk button (interrupt 4)
+ 10a:	8a b1       	in	r24, 0x0a	; 10
+ 10c:	8e 7f       	andi	r24, 0xFE	; 254
+ 10e:	8a b9       	out	0x0a, r24	; 10
+	PORTD = PORTD | (1<<PD0);		// Port E.4 enable pull-up resistor
+ 110:	8b b1       	in	r24, 0x0b	; 11
+ 112:	81 60       	ori	r24, 0x01	; 1
+ 114:	8b b9       	out	0x0b, r24	; 11
 	
-	EICRB = EICRB | (1<<ISC41) | (1<<ISC40);		// External interrupt 4 for falling edge on DT
- 116:	ea e6       	ldi	r30, 0x6A	; 106
+	EICRA = EICRA | (1<<ISC01);		// External interrupt 0 for falling edge on DT
+ 116:	e9 e6       	ldi	r30, 0x69	; 105
  118:	f0 e0       	ldi	r31, 0x00	; 0
  11a:	80 81       	ld	r24, Z
- 11c:	83 60       	ori	r24, 0x03	; 3
+ 11c:	82 60       	ori	r24, 0x02	; 2
  11e:	80 83       	st	Z, r24
  120:	08 95       	ret
 
-00000122 <__vector_5>:
-
-}
-
-ISR(INT4_vect)
-{
- 122:	1f 92       	push	r1
- 124:	0f 92       	push	r0
- 126:	0f b6       	in	r0, 0x3f	; 63
- 128:	0f 92       	push	r0
- 12a:	11 24       	eor	r1, r1
- 12c:	8f 93       	push	r24
-	
-	ped_status = 1;
- 12e:	81 e0       	ldi	r24, 0x01	; 1
- 130:	80 93 00 02 	sts	0x0200, r24	; 0x800200 <__DATA_REGION_ORIGIN__>
-	
- 134:	8f 91       	pop	r24
- 136:	0f 90       	pop	r0
- 138:	0f be       	out	0x3f, r0	; 63
- 13a:	0f 90       	pop	r0
- 13c:	1f 90       	pop	r1
- 13e:	18 95       	reti
-
-00000140 <ports_init>:
+00000122 <ports_init>:
 
 
 void ports_init(void)
 {
 	
 	 DDRA = DDRA | (1<<PA2) | (1<<PA1) | (1<<PA0);		// Ports A.0, A.1, and A.2 as output to control traffic light
- 140:	81 b1       	in	r24, 0x01	; 1
- 142:	87 60       	ori	r24, 0x07	; 7
- 144:	81 b9       	out	0x01, r24	; 1
+ 122:	81 b1       	in	r24, 0x01	; 1
+ 124:	87 60       	ori	r24, 0x07	; 7
+ 126:	81 b9       	out	0x01, r24	; 1
 	 PORTA = PORTA & ~((1<<PA2) | (1<<PA1) | (1<<PA0));		// Ports A.0, A.1, and A.2 initial state
- 146:	82 b1       	in	r24, 0x02	; 2
- 148:	88 7f       	andi	r24, 0xF8	; 248
- 14a:	82 b9       	out	0x02, r24	; 2
- 14c:	08 95       	ret
+ 128:	82 b1       	in	r24, 0x02	; 2
+ 12a:	88 7f       	andi	r24, 0xF8	; 248
+ 12c:	82 b9       	out	0x02, r24	; 2
+ 12e:	08 95       	ret
 
-0000014e <main>:
+00000130 <main>:
 {
 	
 	
 	
 	// ----- Initializations -----
 	interrupt_init();		// Initialize interrupts
- 14e:	dd df       	rcall	.-70     	; 0x10a <interrupt_init>
+ 130:	ec df       	rcall	.-40     	; 0x10a <interrupt_init>
 	timers_init();		// Initialize timers
- 150:	5c d0       	rcall	.+184    	; 0x20a <timers_init>
+ 132:	6b d0       	rcall	.+214    	; 0x20a <timers_init>
 	ports_init();		// Initialize ports
- 152:	f6 df       	rcall	.-20     	; 0x140 <ports_init>
- 154:	8d b3       	in	r24, 0x1d	; 29
+ 134:	f6 df       	rcall	.-20     	; 0x122 <ports_init>
+ 136:	8d b3       	in	r24, 0x1d	; 29
 	
 	
 	
 	// ----- Starting states -----
-	EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
- 156:	80 61       	ori	r24, 0x10	; 16
- 158:	8d bb       	out	0x1d, r24	; 29
+	EIMSK = EIMSK | (1<<INT0);		// Enable interrupt 0
+ 138:	81 60       	ori	r24, 0x01	; 1
+ 13a:	8d bb       	out	0x1d, r24	; 29
 	PORTA = green_light;		// Green light
- 15a:	84 e0       	ldi	r24, 0x04	; 4
- 15c:	82 b9       	out	0x02, r24	; 2
+ 13c:	84 e0       	ldi	r24, 0x04	; 4
+ 13e:	82 b9       	out	0x02, r24	; 2
 	dont_walk_signal();		// Don't walk signal
- 15e:	7c d0       	rcall	.+248    	; 0x258 <dont_walk_signal>
- 160:	10 92 00 02 	sts	0x0200, r1	; 0x800200 <__DATA_REGION_ORIGIN__>
+ 140:	8b d0       	rcall	.+278    	; 0x258 <dont_walk_signal>
+ 142:	10 92 00 02 	sts	0x0200, r1	; 0x800200 <__DATA_REGION_ORIGIN__>
 	ped_status = 0;		// Initial pedestrian signal status
- 164:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
+ 146:	80 91 00 02 	lds	r24, 0x0200	; 0x800200 <__DATA_REGION_ORIGIN__>
     while (1)
     {
 			
 		
 		
 		if (ped_status)		// Crosswalk button has been pressed
- 168:	88 23       	and	r24, r24
- 16a:	e1 f3       	breq	.-8      	; 0x164 <main+0x16>
+ 14a:	88 23       	and	r24, r24
+ 14c:	e1 f3       	breq	.-8      	; 0x146 <main+0x16>
 		{
 			
 			delay_in_ms(1000);		// Wait 1 second
- 16c:	88 ee       	ldi	r24, 0xE8	; 232
- 16e:	93 e0       	ldi	r25, 0x03	; 3
- 170:	2d d0       	rcall	.+90     	; 0x1cc <delay_in_ms>
+ 14e:	88 ee       	ldi	r24, 0xE8	; 232
+ 150:	93 e0       	ldi	r25, 0x03	; 3
+ 152:	3c d0       	rcall	.+120    	; 0x1cc <delay_in_ms>
 			
 			PORTA = yellow_light;		// Yellow light
- 172:	82 e0       	ldi	r24, 0x02	; 2
- 174:	82 b9       	out	0x02, r24	; 2
+ 154:	82 e0       	ldi	r24, 0x02	; 2
+ 156:	82 b9       	out	0x02, r24	; 2
 			delay_in_ms(4000);		// Wait 4 seconds
- 176:	80 ea       	ldi	r24, 0xA0	; 160
- 178:	9f e0       	ldi	r25, 0x0F	; 15
- 17a:	28 d0       	rcall	.+80     	; 0x1cc <delay_in_ms>
+ 158:	80 ea       	ldi	r24, 0xA0	; 160
+ 15a:	9f e0       	ldi	r25, 0x0F	; 15
+ 15c:	37 d0       	rcall	.+110    	; 0x1cc <delay_in_ms>
 			
 			PORTA = red_light;		// Red light
- 17c:	81 e0       	ldi	r24, 0x01	; 1
- 17e:	82 b9       	out	0x02, r24	; 2
+ 15e:	81 e0       	ldi	r24, 0x01	; 1
+ 160:	82 b9       	out	0x02, r24	; 2
 			delay_in_ms(2000);		// Wait 2 seconds
- 180:	80 ed       	ldi	r24, 0xD0	; 208
- 182:	97 e0       	ldi	r25, 0x07	; 7
- 184:	23 d0       	rcall	.+70     	; 0x1cc <delay_in_ms>
- 186:	59 d0       	rcall	.+178    	; 0x23a <walk_signal>
+ 162:	80 ed       	ldi	r24, 0xD0	; 208
+ 164:	97 e0       	ldi	r25, 0x07	; 7
+ 166:	32 d0       	rcall	.+100    	; 0x1cc <delay_in_ms>
+ 168:	68 d0       	rcall	.+208    	; 0x23a <walk_signal>
 			
 			walk_signal();		// Walk signal
- 188:	10 92 00 02 	sts	0x0200, r1	; 0x800200 <__DATA_REGION_ORIGIN__>
+ 16a:	10 92 00 02 	sts	0x0200, r1	; 0x800200 <__DATA_REGION_ORIGIN__>
 			ped_status = 0;		// Reset crosswalk button status
- 18c:	8d b3       	in	r24, 0x1d	; 29
-			EIMSK = EIMSK & ~(1<<INT4);		// Disable interrupt 4
- 18e:	8f 7e       	andi	r24, 0xEF	; 239
- 190:	8d bb       	out	0x1d, r24	; 29
- 192:	88 e8       	ldi	r24, 0x88	; 136
+ 16e:	8d b3       	in	r24, 0x1d	; 29
+			EIMSK = EIMSK & ~(1<<INT0);		// Disable interrupt 0
+ 170:	8e 7f       	andi	r24, 0xFE	; 254
+ 172:	8d bb       	out	0x1d, r24	; 29
+ 174:	88 e8       	ldi	r24, 0x88	; 136
 			delay_in_ms(5000);		// Wait 5 seconds
- 194:	93 e1       	ldi	r25, 0x13	; 19
- 196:	1a d0       	rcall	.+52     	; 0x1cc <delay_in_ms>
- 198:	8d b3       	in	r24, 0x1d	; 29
-			EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
- 19a:	80 61       	ori	r24, 0x10	; 16
- 19c:	8d bb       	out	0x1d, r24	; 29
+ 176:	93 e1       	ldi	r25, 0x13	; 19
+ 178:	29 d0       	rcall	.+82     	; 0x1cc <delay_in_ms>
+ 17a:	8d b3       	in	r24, 0x1d	; 29
+			EIMSK = EIMSK | (1<<INT0);		// Enable interrupt 0
+ 17c:	81 60       	ori	r24, 0x01	; 1
+ 17e:	8d bb       	out	0x1d, r24	; 29
 			
 			for (uint8_t i = 1; i <= 9; i++)		// Flash don't walk signal
- 19e:	c1 e0       	ldi	r28, 0x01	; 1
+ 180:	c1 e0       	ldi	r28, 0x01	; 1
 			{
 				
 				dont_walk_signal();
- 1a0:	09 c0       	rjmp	.+18     	; 0x1b4 <main+0x66>
- 1a2:	5a d0       	rcall	.+180    	; 0x258 <dont_walk_signal>
+ 182:	09 c0       	rjmp	.+18     	; 0x196 <main+0x66>
+ 184:	69 d0       	rcall	.+210    	; 0x258 <dont_walk_signal>
 				delay_in_ms(500);
- 1a4:	84 ef       	ldi	r24, 0xF4	; 244
- 1a6:	91 e0       	ldi	r25, 0x01	; 1
- 1a8:	11 d0       	rcall	.+34     	; 0x1cc <delay_in_ms>
+ 186:	84 ef       	ldi	r24, 0xF4	; 244
+ 188:	91 e0       	ldi	r25, 0x01	; 1
+ 18a:	20 d0       	rcall	.+64     	; 0x1cc <delay_in_ms>
 				off();
- 1aa:	67 d0       	rcall	.+206    	; 0x27a <off>
- 1ac:	84 ef       	ldi	r24, 0xF4	; 244
+ 18c:	76 d0       	rcall	.+236    	; 0x27a <off>
+ 18e:	84 ef       	ldi	r24, 0xF4	; 244
 				delay_in_ms(500);
- 1ae:	91 e0       	ldi	r25, 0x01	; 1
- 1b0:	0d d0       	rcall	.+26     	; 0x1cc <delay_in_ms>
- 1b2:	cf 5f       	subi	r28, 0xFF	; 255
+ 190:	91 e0       	ldi	r25, 0x01	; 1
+ 192:	1c d0       	rcall	.+56     	; 0x1cc <delay_in_ms>
+ 194:	cf 5f       	subi	r28, 0xFF	; 255
 			ped_status = 0;		// Reset crosswalk button status
-			EIMSK = EIMSK & ~(1<<INT4);		// Disable interrupt 4
+			EIMSK = EIMSK & ~(1<<INT0);		// Disable interrupt 0
 			delay_in_ms(5000);		// Wait 5 seconds
-			EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
+			EIMSK = EIMSK | (1<<INT0);		// Enable interrupt 0
 			
 			for (uint8_t i = 1; i <= 9; i++)		// Flash don't walk signal
- 1b4:	ca 30       	cpi	r28, 0x0A	; 10
- 1b6:	a8 f3       	brcs	.-22     	; 0x1a2 <main+0x54>
- 1b8:	4f d0       	rcall	.+158    	; 0x258 <dont_walk_signal>
+ 196:	ca 30       	cpi	r28, 0x0A	; 10
+ 198:	a8 f3       	brcs	.-22     	; 0x184 <main+0x54>
+ 19a:	5e d0       	rcall	.+188    	; 0x258 <dont_walk_signal>
 				off();
 				delay_in_ms(500);
 				
 			}
 			
 			dont_walk_signal();		// Steady don't walk signal
- 1ba:	80 ed       	ldi	r24, 0xD0	; 208
- 1bc:	97 e0       	ldi	r25, 0x07	; 7
+ 19c:	80 ed       	ldi	r24, 0xD0	; 208
+ 19e:	97 e0       	ldi	r25, 0x07	; 7
 			delay_in_ms(2000);		// Wait 2 seconds
- 1be:	06 d0       	rcall	.+12     	; 0x1cc <delay_in_ms>
- 1c0:	84 e0       	ldi	r24, 0x04	; 4
- 1c2:	82 b9       	out	0x02, r24	; 2
- 1c4:	80 e1       	ldi	r24, 0x10	; 16
+ 1a0:	15 d0       	rcall	.+42     	; 0x1cc <delay_in_ms>
+ 1a2:	84 e0       	ldi	r24, 0x04	; 4
+ 1a4:	82 b9       	out	0x02, r24	; 2
+ 1a6:	80 e1       	ldi	r24, 0x10	; 16
 			
 			PORTA = green_light;		// Green light
- 1c6:	97 e2       	ldi	r25, 0x27	; 39
- 1c8:	01 d0       	rcall	.+2      	; 0x1cc <delay_in_ms>
+ 1a8:	97 e2       	ldi	r25, 0x27	; 39
+ 1aa:	10 d0       	rcall	.+32     	; 0x1cc <delay_in_ms>
 			
 			delay_in_ms(10000);		// Cooldown for 10 seconds
- 1ca:	cc cf       	rjmp	.-104    	; 0x164 <main+0x16>
+ 1ac:	cc cf       	rjmp	.-104    	; 0x146 <main+0x16>
+
+000001ae <__vector_1>:
+ 1ae:	1f 92       	push	r1
+ 1b0:	0f 92       	push	r0
+ 1b2:	0f b6       	in	r0, 0x3f	; 63
+ 1b4:	0f 92       	push	r0
+}
+
+
+
+ISR(INT0_vect)
+{
+ 1b6:	11 24       	eor	r1, r1
+ 1b8:	8f 93       	push	r24
+	
+	ped_status = 1;
+ 1ba:	81 e0       	ldi	r24, 0x01	; 1
+ 1bc:	80 93 00 02 	sts	0x0200, r24	; 0x800200 <__DATA_REGION_ORIGIN__>
+	
+}
+ 1c0:	8f 91       	pop	r24
+ 1c2:	0f 90       	pop	r0
+ 1c4:	0f be       	out	0x3f, r0	; 63
+ 1c6:	0f 90       	pop	r0
+ 1c8:	1f 90       	pop	r1
+ 1ca:	18 95       	reti
 
 000001cc <delay_in_ms>:
 
