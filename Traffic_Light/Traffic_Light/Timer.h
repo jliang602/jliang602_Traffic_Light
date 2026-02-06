@@ -5,9 +5,9 @@
  *
  * Author: Joshua Liang
  *
- * Created:
+ * Created: 1/31/2026 21:04:00
  *
- * Description:
+ * Description: This is where the timer functions are declared.
  */
 
 

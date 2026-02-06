@@ -5,9 +5,9 @@
  *
  * Author: Joshua Liang
  *
- * Created: 
+ * Created: 1/31/2026 21:04:00
  *
- * Description:
+ * Description: In this file, it involves initializing timers. Timer 0 is a simple delay counter and Timer 1 is to control the PWM of the multicolor LED. Functions with different combinations of OCR values are used to produce the desired cololr on the multicolor LED.
  *
  * Hardware Input:
  *  None

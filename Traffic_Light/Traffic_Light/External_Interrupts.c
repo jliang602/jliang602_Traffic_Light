@@ -5,9 +5,9 @@
  *
  * Author: Joshua Liang
  *
- * Created:
+ * Created: 2/5/2026 9:29:41
  *
- * Description:
+ * Description: This is the file that initializes the interrupt with the push button input.
  *
  * Hardware Input:
  *  PORTE.4 - Interrupt 4 input from crosswalk button

@@ -10,7 +10,7 @@
  * Description: This is the main code that controls the traffic light and pedestrian signal.
  *
  * Hardware Input:
- *  PORTL.0 for push button
+ *  None
  *
  * Hardware Output:
  *  PORTA.0 for traffic light red
@@ -77,8 +77,6 @@ int main(void)
 		
 		if (ped_status)		// Crosswalk button has been pressed
 		{
-			
-			delay_in_ms(1000);		// Wait 1 second
 			
 			PORTA = yellow_light;		// Yellow light
 			delay_in_ms(4000);		// Wait 4 seconds
