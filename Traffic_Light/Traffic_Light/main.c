@@ -58,13 +58,20 @@ int main(void)
 	interrupt_init();		// Initialize interrupts
 	timers_init();		// Initialize timers
 	ports_init();		// Initialize ports
-	sei();		// Enable interrupts
+	
+	
+	
+	// ----- Enable interrupt 4 -----
+	sei();		// Enable all interrupts program-wide
 	EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
-	ped_status = 0;		// Initial pedestrian signal status
 	
-
 	
-	// ----- Starting states -----
+	
+	ped_status = 0;		// Initialize crosswalk button status to 0
+	
+	
+	
+	// ----- Start with green light and don't walk signal -----
 	PORTA = green_light;		// Green light
 	dont_walk_signal();		// Don't walk signal
 	
@@ -72,46 +79,84 @@ int main(void)
 	
     while (1)
     {
-			
-		
-		
-		if (ped_status)		// Crosswalk button has been pressed
+
+
+
+		// ----- Has crosswalk button been pressed? -----
+		if (ped_status)		// Yes
 		{
 			
+			
+			
 			PORTA = yellow_light;		// Yellow light
+			
+			
+			
 			delay_in_ms(4000);		// Wait 4 seconds
 			
+			
+			
 			PORTA = red_light;		// Red light
+			
+			
+			
 			delay_in_ms(2000);		// Wait 2 seconds
 			
+			
+			
 			walk_signal();		// Walk signal
+			
+			
+			
+			// ----- Reset crosswalk button status and disable interrupt 4 -----
 			ped_status = 0;		// Reset crosswalk button status
 			EIMSK = EIMSK & ~(1<<INT4);		// Disable interrupt 4
-			delay_in_ms(5000);		// Wait 5 seconds
-			EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
 			
-			for (uint8_t i = 1; i <= 9; i++)		// Flash don't walk signal
+			
+			
+			delay_in_ms(5000);		// Wait 5 seconds
+			
+			
+			
+			EIMSK = EIMSK | (1<<INT4);		// Re-enable interrupt 4
+			
+			
+			
+			// ----- Flashing don't walk signal -----
+			for (uint8_t i = 1; i <= 9; i++)
 			{
-				
 				dont_walk_signal();
 				delay_in_ms(500);
 				off();
 				delay_in_ms(500);
-				
 			}
 			
+			
+			
 			dont_walk_signal();		// Steady don't walk signal
+			
+			
+			
 			delay_in_ms(2000);		// Wait 2 seconds
+			
+			
 			
 			PORTA = green_light;		// Green light
 			
-			delay_in_ms(10000);		// Cooldown for 10 seconds
+			
+			
+			delay_in_ms(10000);		// Wait 10 seconds (cooldown)
+			
+			
 			
 		}
 		
 		
 		
     }
+	
+	
+	
 }
 
 
