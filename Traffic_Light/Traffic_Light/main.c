@@ -59,14 +59,14 @@ int main(void)
 	timers_init();		// Initialize timers
 	ports_init();		// Initialize ports
 	sei();		// Enable interrupts
+	EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
+	ped_status = 0;		// Initial pedestrian signal status
 	
-	
+
 	
 	// ----- Starting states -----
-	EIMSK = EIMSK | (1<<INT4);		// Enable interrupt 4
 	PORTA = green_light;		// Green light
 	dont_walk_signal();		// Don't walk signal
-	ped_status = 0;		// Initial pedestrian signal status
 	
 	
 	
