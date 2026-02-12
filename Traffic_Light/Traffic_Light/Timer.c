@@ -13,9 +13,9 @@
  *  None
  *
  * Hardware Output:
- *  PORTE.5 for red light on multicolor LED
- *  PORTE.6 for green light on multicolor LED
- *	PORTE.7 for blue light on multicolor LED
+ *  PORTB.5 for red light on multicolor LED
+ *  PORTB.6 for green light on multicolor LED
+ *	PORTB.7 for blue light on multicolor LED
  */ 
 
 #define F_CPU 16000000UL
@@ -77,8 +77,8 @@ void timers_init(void)
 	
 	
 	// ----- Timer 1 (PWM, Phase Correct, 8-bit) -----
-	DDRB = DDRB | (1<<PB7) | (1<<PB6) | (1<<PB5);		// Configure Port E.5, E.6, and E.7 for OC1A, OC1B, and OC1C outputs
-	PORTB = DDRB & ~((1<<PB7) | (1<<PB6) | (1<<PB5));		// Ports E.5, E.6, and E.7 initial state
+	DDRB = DDRB | (1<<PB7) | (1<<PB6) | (1<<PB5);		// Configure Port B.5, B.6, and B.7 for OC1A, OC1B, and OC1C outputs
+	PORTB = DDRB & ~((1<<PB7) | (1<<PB6) | (1<<PB5));		// Ports B.5, B.6, and B.7 initial state
 	
 	TCCR1A = TCCR1A | (1<<WGM10);		// Set waveform generation mode
 	
@@ -110,4 +110,5 @@ void off(void)
 	OCR1A = 0;
 	OCR1B = 0;
 	OCR1C = 0;
+
 }
