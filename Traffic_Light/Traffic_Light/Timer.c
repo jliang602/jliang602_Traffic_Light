@@ -13,9 +13,9 @@
  *  None
  *
  * Hardware Output:
- *  PORTB.5 for red light on multicolor LED
- *  PORTB.6 for green light on multicolor LED
- *	PORTB.7 for blue light on multicolor LED
+ *  PORTB.5 (OC1A) for red light on multicolor LED
+ *  PORTB.6 (OC1B) for green light on multicolor LED
+ *	PORTB.7 (OC1C) for blue light on multicolor LED
  */ 
 
 #define F_CPU 16000000UL
@@ -112,3 +112,4 @@ void off(void)
 	OCR1C = 0;
 
 }
+
