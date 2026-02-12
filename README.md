@@ -10,4 +10,4 @@ The delay was self-created using a Arduino Mega 2560 timer. Below is the flowcha
 
 ![Timer.c Flowchart](./Flowcharts/Flowchart_Timer.c.png)
 
-Below is the wiring schematic.
+The codes can be found here: Traffic_Light/Traffic_Light
