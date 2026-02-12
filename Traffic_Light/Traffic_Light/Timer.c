@@ -25,23 +25,39 @@
 // ----- Variables -----
 uint8_t time_in_ms;
 
-void delay_in_ms(uint16_t time_in_ms)
+void delay_in_ms(uint16_t time_in_ms)		// Get delay in milliseconds
 {
-
-	for (uint16_t a = 1; a <= time_in_ms; a++)
+	
+	
+	
+	// ----- Has delay elapsed? -----
+	for (uint16_t a = 1; a <= time_in_ms; a++)		// If no 
 	{
 		
+		
+		
 		TCNT0 = 6;		// Pre-load count to delay 1 ms with a clock pre-scale of 64
+		
+		
+		
 		TCCR0B = TCCR0B | (1<<CS31) | (1<<CS30);		// Pre-scale clock by 64 and start counting
 		
-		while (!(TIFR0 & (1<<TOV0)))		// Timer hasn't reached maximum
+		
+		
+		while (!(TIFR0 & (1<<TOV0)))		// Wait until count reaches maximum
 		{
 			
 		}
 		
+		
+		
 		TCCR0B = TCCR0B & ~( (1<<CS31) | (1<<CS30) );		// Stop counting
 		
+		
+		
 		TIFR0 = TIFR0 | (1<<TIFR0);		// Remove flag
+		
+		
 		
 	}
 

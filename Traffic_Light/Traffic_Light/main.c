@@ -83,7 +83,7 @@ int main(void)
 
 
 		// ----- Has crosswalk button been pressed? -----
-		if (ped_status)		// Yes
+		if (ped_status)		// If yes
 		{
 			
 			
