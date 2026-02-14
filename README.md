@@ -6,7 +6,7 @@ The traffic light stays green and then changes when a pedestrian appraoches the 
 
 This is the video of the program in action.
 
-![Program in Action](./Videos/Program_in_Action.mov)
+![Program in Action](./Videos/Program_in_Action.MOV)
 
 The image below shows the flowchart for the main program, the basic structure.
 
