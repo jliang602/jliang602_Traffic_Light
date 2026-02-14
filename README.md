@@ -10,7 +10,7 @@ https://github.com/user-attachments/assets/ca67f837-6a4c-4767-a991-f8c9e6bbe85e
 
 
 
-Below includes documentation and additional information related to the program's operation.
+Documentation and additional information
 -----
 
 The image below shows the flowchart for the main program, the basic structure.
