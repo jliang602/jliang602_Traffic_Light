@@ -12,6 +12,6 @@ The delay was self-created using a Arduino Mega 2560 timer. Below is the flowcha
 
 Here is the circuit schematic.
 
-![Circuit Schematic](./Schematic/Schematic.jpg)
+![Circuit Schematic](./Schematics/Schematic.jpg)
 
-The codes can be found here: [Codes](Traffic_Light/Traffic_Light)
+The codes can be found [here](Traffic_Light/Traffic_Light).
