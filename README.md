@@ -13,11 +13,13 @@ https://github.com/user-attachments/assets/ca67f837-6a4c-4767-a991-f8c9e6bbe85e
 Documentation and additional information
 -----
 
+The codes can be found [here](Traffic_Light/Traffic_Light).
+
 The image below shows the flowchart for the main program, the basic structure.
 
 ![Main Program Flowchart](./Flowcharts/Flowchart_Main.png)
 
-The delay was self-created using a Arduino Mega 2560 timer. Below is the flowchart for just the timer.
+The delay was self-created using a Arduino Mega 2560 timer. Below is the flowchart for just the delay_in_ms located in the timer module.
 
 ![delay_in_ms Function Flowchart](./Flowcharts/Flowchart_delay_in_ms.png)
 
@@ -32,5 +34,3 @@ Also included for reference is the pinout for the multicolor LED.
 The images below show the hardware setup.
 
 ![Hardware Setup](./Hardware/HardwareSetup1.jpg) ![Hardware Setup](./Hardware/HardwareSetup2.jpg)
-
-The codes can be found [here](Traffic_Light/Traffic_Light).
