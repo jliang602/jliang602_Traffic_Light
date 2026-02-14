@@ -14,4 +14,8 @@ Here is the circuit schematic.
 
 ![Circuit Schematic](./Schematics/Schematic.jpg)
 
+Also included for reference is the pinout for the multicolor LED.
+
+![Multicolor LED Pinout](./Schematics/Multicolor_LED_Pinout.jpg)
+
 The codes can be found [here](Traffic_Light/Traffic_Light).
