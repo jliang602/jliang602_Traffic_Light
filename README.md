@@ -4,6 +4,10 @@ This program will simulate a signalized crosswalk with a traffic light and pedes
 
 The traffic light stays green and then changes when a pedestrian appraoches the crosswalk and presses the button. The pedestrian signal cycle will start after the traffic light turns red. After the pedestrian signal cycle is done, the traffic light will change back to green. There is a cooldown before the traffic light can change again for a pedestrian.
 
+This is the video of the program in action.
+
+![Program in Action](./Videos/Program_in_Action.mov)
+
 The image below shows the flowchart for the main program, the basic structure.
 
 ![Main Program Flowchart](./Flowcharts/Flowchart_Main.png)
