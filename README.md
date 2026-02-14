@@ -8,6 +8,10 @@ The image below shows the flowchart for the main program, the basic structure.
 
 The delay was self-created using a Arduino Mega 2560 timer. Below is the flowchart for just the timer.
 
-![Timer.c Flowchart](./Flowcharts/Flowchart_Timer.c.png)
+![delay_in_ms Function Flowchart](./Flowcharts/Flowchart_delay_in_ms.png)
+
+Here is the circuit schematic.
+
+![Circuit Schematic](./Schematic/Schematic.jpg)
 
 The codes can be found here: [Codes](Traffic_Light/Traffic_Light)
