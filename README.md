@@ -8,6 +8,11 @@ This is the video of the program in action.
 
 https://github.com/user-attachments/assets/ca67f837-6a4c-4767-a991-f8c9e6bbe85e
 
+
+
+Below includes documentation and additional information related to the program's operation.
+-----
+
 The image below shows the flowchart for the main program, the basic structure.
 
 ![Main Program Flowchart](./Flowcharts/Flowchart_Main.png)
